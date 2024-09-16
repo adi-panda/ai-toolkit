@@ -2,7 +2,7 @@
 job: extension
 config:
   # this name will be the folder and filename name
-  name: "my_first_flux_lora_v1"
+  name: "luffy_65_images"
   process:
     - type: 'sd_trainer'
       # root folder to save training sessions/samples/weights
@@ -31,22 +31,22 @@ config:
         # images will automatically be resized and bucketed into the resolution specified
         # on windows, escape back slashes with another backslash so
         # "C:\\path\\to\\images\\folder"
-        - folder_path: "/path/to/images/folder"
+        - folder_path: "/home/azureuser/localfiles/ai-toolkit/luffy_dataset"
           caption_ext: "txt"
           caption_dropout_rate: 0.05  # will drop out the caption 5% of time
           shuffle_tokens: false  # shuffle caption order, split by commas
           cache_latents_to_disk: true  # leave this true unless you know what you're doing
           resolution: [ 512, 768, 1024 ]  # flux enjoys multiple resolutions
       train:
-        batch_size: 1
-        steps: 2000  # total number of steps to train 500 - 4000 is a good range
+        batch_size: 8
+        steps: 500  # total number of steps to train 500 - 4000 is a good range
         gradient_accumulation_steps: 1
         train_unet: true
         train_text_encoder: false  # probably won't work with flux
         gradient_checkpointing: true  # need the on unless you have a ton of vram
         noise_scheduler: "flowmatch" # for training only
         optimizer: "adamw8bit"
-        lr: 1e-4
+        lr: 8e-4
         # uncomment this to skip the pre training sample
 #        skip_first_sample: true
         # uncomment to completely disable sampling
@@ -69,22 +69,26 @@ config:
 #        low_vram: true  # uncomment this if the GPU is connected to your monitors. It will use less vram to quantize, but is slower.
       sample:
         sampler: "flowmatch" # must match train.noise_scheduler
-        sample_every: 250 # sample every this many steps
+        sample_every: 100 # sample every this many steps
         width: 1024
         height: 1024
         prompts:
           # you can add [trigger] to the prompts here and it will be replaced with the trigger word
-#          - "[trigger] holding a sign that says 'I LOVE PROMPTS!'"\
-          - "woman with red hair, playing chess at the park, bomb going off in the background"
-          - "a woman holding a coffee cup, in a beanie, sitting at a cafe"
-          - "a horse is a DJ at a night club, fish eye lens, smoke machine, lazer lights, holding a martini"
-          - "a man showing off his cool new t shirt at the beach, a shark is jumping out of the water in the background"
-          - "a bear building a log cabin in the snow covered mountains"
-          - "woman playing the guitar, on stage, singing a song, laser lights, punk rocker"
-          - "hipster man with a beard, building a chair, in a wood shop"
-          - "photo of a man, white background, medium shot, modeling clothing, studio lighting, white backdrop"
-          - "a man holding a sign that says, 'this is a sign'"
-          - "a bulldog, in a post apocalyptic world, with a shotgun, in a leather jacket, in a desert, with a motorcycle"
+         - "MON_LOF33 holding a sign that says 'I LOVE PROMPTS!', he is standing full body on a beach at sunset. He is wearing a red vest, yellow sash,  and a straw hat. The setting sun casts a dynamic shadow on his face."
+         - "MON_LOF33 jumping out of a propeller airplane, sky diving. He looks excited and his hair is blowing in the wind. The sky is clear and blue, there are birds pictured in the distance."
+         - "MON_LOF33 spinning a basketball on his finger on a basketball court. He is wearing a laker's lersey with the #12 on it. The basketball hoop and crowd are in the background cheering him. He is smiling."
+         - "MON_LUF33 is wearing a suit in an office shaking the hand of a business woman. The woman has purple hair and is wearing professional attire. There is a Google logo in the background. It is during daytime, and the overall sentiment is one of accomplishment."
+         - "MON_LOF33 is fighting a large brown grizzly bear, deep in a forest. The bear is tall and standing on two legs, roaring. The bear is also wearing a crown because it is the king of all bears. Around them are tall trees and other animals watching."
+          # - "woman with red hair, playing chess at the park, bomb going off in the background"
+          # - "a woman holding a coffee cup, in a beanie, sitting at a cafe"
+          # - "a horse is a DJ at a night club, fish eye lens, smoke machine, lazer lights, holding a martini"
+          # - "a man showing off his cool new t shirt at the beach, a shark is jumping out of the water in the background"
+          # - "a bear building a log cabin in the snow covered mountains"
+          # - "woman playing the guitar, on stage, singing a song, laser lights, punk rocker"
+          # - "hipster man with a beard, building a chair, in a wood shop"
+          # - "photo of a man, white background, medium shot, modeling clothing, studio lighting, white backdrop"
+          # - "a man holding a sign that says, 'this is a sign'"
+          # - "a bulldog, in a post apocalyptic world, with a shotgun, in a leather jacket, in a desert, with a motorcycle"
         neg: ""  # not used on flux
         seed: 42
         walk_seed: true
